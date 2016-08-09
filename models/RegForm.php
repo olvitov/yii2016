@@ -36,19 +36,26 @@ class RegForm extends Model
         ];
 
     }
-
-    public function reg()
-    {
-        return true;
-    }
-
     public function attributeLabels()
     {
         return [
-          'username' => 'Имя пользователя',
+            'username' => 'Имя пользователя',
             'email' => 'Эл. почта',
             'password' => 'Пароль'
         ];
     }
+
+    public function reg()
+    {
+        $user = new User();
+        $user->username = $this->username;
+        $user->email = $this->email;
+        $user->status = $this->status;
+        $user->setPassword($this->password);
+        $user->generateAuthKey();
+        return $user->save() ? $user : null;
+    }
+
+
 }
 
